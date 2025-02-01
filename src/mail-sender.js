@@ -13,7 +13,6 @@ class MailSender {
   }
 
   sendEmail(targetEmail, content) {
-    console.log("sendEmail");
     const message = {
       from: "Open Music Apps",
       to: targetEmail,
@@ -27,7 +26,14 @@ class MailSender {
       ],
     };
 
-    return this._transporter.sendMail(message);
+    return this._transporter
+      .sendMail(message)
+      .then((info) => {
+        console.log("Email sent :", info.response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 }
 

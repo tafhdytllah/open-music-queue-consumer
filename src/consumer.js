@@ -5,7 +5,7 @@ const MailSender = require("./mail-sender");
 const Listener = require("./listener");
 
 const init = async () => {
-  console.log("Worker started");
+  console.log("Consumer started");
   const playlistService = new PlaylistService();
   const mailSender = new MailSender();
   const listener = new Listener(playlistService, mailSender);
@@ -18,7 +18,14 @@ const init = async () => {
     durable: true,
   });
 
-  channel.consume("export:playlist", listener.listen, { noAck: true });
+  channel.consume(
+    "export:playlist",
+    (msg) => {
+      console.log("Message received");
+      listener.listen(msg);
+    },
+    { noAck: true },
+  );
   console.log("Waiting for messages in queue...");
 };
 
