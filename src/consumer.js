@@ -6,6 +6,8 @@ const Listener = require("./listener");
 
 const init = async () => {
   console.log("Consumer started");
+  const queueName = "export:playlist";
+
   const playlistService = new PlaylistService();
   const mailSender = new MailSender();
   const listener = new Listener(playlistService, mailSender);
@@ -14,12 +16,12 @@ const init = async () => {
 
   const channel = await connection.createChannel();
 
-  await channel.assertQueue("export:playlist", {
+  await channel.assertQueue(queueName, {
     durable: true,
   });
 
   channel.consume(
-    "export:playlist",
+    queueName,
     (msg) => {
       console.log("Message received");
       listener.listen(msg);
