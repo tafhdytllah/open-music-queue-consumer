@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src/consumer.js",
     "dev": "node src/consumer.js",
+    "lint": "eslint ./src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
